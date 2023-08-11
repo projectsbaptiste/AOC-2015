@@ -1,1 +1,3 @@
-target/*
+aoc_2015/target/*
+aoc_2015/Cargo.lock
+
