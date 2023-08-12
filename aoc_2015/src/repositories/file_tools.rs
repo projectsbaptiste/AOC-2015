@@ -18,6 +18,7 @@ use std::path::Path;
 /// * `file_path` - A string where we got file path work should work on absolute and relative path
 ///
 /// Remarque . is the place at the same place as src
+///
 /// # Examples
 ///
 /// on the file "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt"  I got an '('
