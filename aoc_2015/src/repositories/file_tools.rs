@@ -1,6 +1,40 @@
+//! # repositories
+//!
+//! `repositorues` is a collection of tools its whats the program need to get entries. Its maybe the adapter  fromhexagonal architecture
+//!
+//! file tools
+
 use std::fs;
 use std::path::Path;
 
+/// # check_file
+///
+///  fonction who check file can be canonicalize . exist  because if I use unwrap on canonulize I have panic If I have no file
+///
+/// Returns true when all is good false otherside
+///
+/// # Arguments
+///
+/// * `file_path` - A string where we got file path work should work on absolute and relative path
+///
+/// Remarque . is the place at the same place as src
+/// # Examples
+///
+/// ```
+/// on the file "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt"  I got an '('
+/// exemple 1
+/// "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file path
+/// should return true
+///
+/// exemple 2
+/// "../aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file_path
+/// should return true
+///
+///
+/// exemple 3
+/// "../aoc_2015_inputs/day_1/unexist.txt" -> file_path
+/// should return false
+/// ```
 fn check_file(file_path: &str) -> bool {
     let path = Path::new(file_path);
     let test = path.canonicalize();
@@ -9,8 +43,31 @@ fn check_file(file_path: &str) -> bool {
         Err(_) => return false,
     };
 }
-
-fn get_content_file(file_path: &str) -> String {
+/// # utils
+///
+///  fonction who get content file into a string from a file path
+///
+/// Returns the content of a file into a string or Problem to canonicalize file
+///
+/// # Arguments
+///
+/// * `file_path` - A string where we got file path work should work on absolute and relative path
+///
+/// Remarque . is the place at the same place as src
+/// # Examples
+///
+/// ```
+/// on the file "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt"  I got an '('
+/// exemple 1
+/// "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file path
+/// should return '('
+///
+/// exemple 2
+/// "../aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file_path
+/// should return 5
+///
+/// ```
+pub fn get_content_file(file_path: &str) -> String {
     println!("In file {}", file_path);
     if (check_file(file_path)) {
         let contents = fs::read_to_string(
@@ -21,7 +78,6 @@ fn get_content_file(file_path: &str) -> String {
                 .to_str()
                 .expect("msg"),
         );
-        println!("Content {:?}", contents);
         return contents.expect("Problem");
     } else {
         println!("Problem to canonicalize file");
