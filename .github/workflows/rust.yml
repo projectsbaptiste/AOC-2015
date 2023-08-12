@@ -19,7 +19,9 @@ jobs:
     - name: Go rust project
       run: cd aoc_2015/
     - name: where I m
-      run: pwd
+      run: ls
+    - name: Tree is here
+      run: tree .
     - name: Build
       run: cargo build --verbose
     - name: Run tests
