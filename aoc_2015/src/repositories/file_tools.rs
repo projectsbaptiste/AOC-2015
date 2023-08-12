@@ -69,7 +69,7 @@ fn check_file(file_path: &str) -> bool {
 /// ```
 pub fn get_content_file(file_path: &str) -> String {
     println!("In file {}", file_path);
-    if (check_file(file_path)) {
+    if check_file(file_path) {
         let contents = fs::read_to_string(
             Path::new(file_path)
                 .canonicalize()
@@ -78,15 +78,16 @@ pub fn get_content_file(file_path: &str) -> String {
                 .to_str()
                 .expect("msg"),
         );
-        return contents.expect("Problem");
+        contents.expect("Problem")
     } else {
         println!("Problem to canonicalize file");
-        return "Problem to canonicalize file".to_string();
+
+        "Problem to canonicalize file".to_string()
     }
 }
 
 mod tests {
-    use super::*;
+    use super::get_content_file;
     #[test]
     fn read_file_this_file() {
         let absolute_path="/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015/src/repositories/file_tools.rs";
