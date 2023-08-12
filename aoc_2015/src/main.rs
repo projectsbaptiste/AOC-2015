@@ -8,7 +8,7 @@
 //!
 //! # Baby step by <https://www.youtube.com/watch?v=xI_iN1HNweI>
 //!
-//! ```
+//!
 //! 1 Extract method
 //!
 //! 2 Extract parameter in function or method
@@ -22,7 +22,7 @@
 //! 6 Replace an expression with a function call or an more complex expression
 //!
 //! 7 Undo the last step
-//! ```
+//!
 
 use aoc_2015::Day1PublicAPI;
 

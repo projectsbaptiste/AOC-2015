@@ -20,21 +20,20 @@ use std::path::Path;
 /// Remarque . is the place at the same place as src
 /// # Examples
 ///
-/// ```
 /// on the file "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt"  I got an '('
 /// exemple 1
-/// "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file path
+/// /home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt -> file path
 /// should return true
 ///
 /// exemple 2
-/// "../aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file_path
+/// ../aoc_2015_inputs/day_1/test_one_parenthesis.txt -> file_path
 /// should return true
 ///
 ///
 /// exemple 3
-/// "../aoc_2015_inputs/day_1/unexist.txt" -> file_path
+/// ../aoc_2015_inputs/day_1/unexist.txt -> file_path
 /// should return false
-/// ```
+///
 fn check_file(file_path: &str) -> bool {
     let path = Path::new(file_path);
     let test = path.canonicalize();
@@ -56,7 +55,7 @@ fn check_file(file_path: &str) -> bool {
 /// Remarque . is the place at the same place as src
 /// # Examples
 ///
-/// ```
+///
 /// on the file "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt"  I got an '('
 /// exemple 1
 /// "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file path
@@ -66,7 +65,7 @@ fn check_file(file_path: &str) -> bool {
 /// "../aoc_2015_inputs/day_1/test_one_parenthesis.txt" -> file_path
 /// should return 5
 ///
-/// ```
+///
 pub fn get_content_file(file_path: &str) -> String {
     println!("In file {}", file_path);
     if check_file(file_path) {
