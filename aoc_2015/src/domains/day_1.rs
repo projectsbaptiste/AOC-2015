@@ -4,18 +4,6 @@
 //!
 //! -statement of day 1 problem : <https://adventofcode.com/2015/day/1>
 
-/*
-Baby step by https://www.youtube.com/watch?v=xI_iN1HNweI
-1 Extract method
-2 Extract parameter in function or method
-3 Extract Constant
-4 Add a test
-5 Add a case to an existing switch or if with a dead simple implementation
-6 Replace an expression with a function call or an more complex expression
-7 And Undo the last step
-
- */
-
 /// # nb of occurence
 ///
 ///  nomber of occurence of only a char
@@ -26,9 +14,8 @@ fn nb_of_occurence(entrie: String, seek: char) -> i32 {
 const UP: char = '(';
 const DOWN: char = ')';
 /// day_1
-/// ```
+///
 ///  find the floor by instruction
-/// ```
 pub fn day_1(entrie: String) -> i32 {
     let direction_up = nb_of_occurence(entrie.clone(), UP);
     let direction_down = nb_of_occurence(entrie.clone(), DOWN);
