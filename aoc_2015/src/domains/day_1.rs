@@ -17,7 +17,7 @@
 ///
 /// # Examples
 ///
-/// ```
+///
 /// exemple 1
 /// '()))' -> entry
 /// '(' -> wanted
@@ -28,7 +28,7 @@
 /// ')' -> wanted
 /// should return 3
 ///
-/// ```
+///
 fn nb_of_occurence(entrie: String, wanted: char) -> i32 {
     return entrie.chars().filter(|c| c == &wanted).count() as i32;
 }
@@ -52,7 +52,7 @@ const DOWN: char = ')';
 ///
 /// # Examples
 ///
-/// ```
+///
 /// exemple 1
 /// '(())' -> entry or '()()' -> entry
 /// should return 0
@@ -73,7 +73,7 @@ const DOWN: char = ')';
 /// ')))' -> entry or ')())())' -> entry
 /// should return -3
 ///
-/// ```
+///
 pub fn day_1(entrie: String) -> i32 {
     let direction_up = nb_of_occurence(entrie.clone(), UP);
     let direction_down = nb_of_occurence(entrie.clone(), DOWN);
@@ -92,7 +92,7 @@ pub fn day_1(entrie: String) -> i32 {
 ///
 /// # Examples
 ///
-/// ```
+///
 /// exemple 1
 /// ')' -> entry
 /// should return 1
@@ -101,7 +101,7 @@ pub fn day_1(entrie: String) -> i32 {
 /// '()())' -> entry
 /// should return 5
 ///
-/// ```
+///
 pub fn day_1_part_2(entrie: String) -> i32 {
     let mut current_floor = 0;
     let mut cpt = 0;
