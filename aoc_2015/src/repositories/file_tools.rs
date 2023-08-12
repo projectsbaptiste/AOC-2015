@@ -89,6 +89,7 @@ pub fn get_content_file(file_path: &str) -> String {
 mod tests {
     use super::get_content_file;
     #[test]
+    #[ignore = "only on local in my computer"]
     fn read_file_this_file() {
         let absolute_path="/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015/src/repositories/file_tools.rs";
         get_content_file(absolute_path);

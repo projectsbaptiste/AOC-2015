@@ -7,6 +7,7 @@ fn day_1_with_one_parnetesis_entrie_should_return_floor_1() {
 }
 
 #[test]
+#[ignore = "only on local in my computer"]
 fn day_1_with_file_absolute_path_should_return_floor_1() {
     let exemple = "/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt";
     let day_1_test = Day1PublicAPI::new(exemple.to_string());
