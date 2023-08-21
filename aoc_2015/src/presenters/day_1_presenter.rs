@@ -27,10 +27,11 @@ impl Day1RestPublicAPI {
         let contents = get_content_file(&self.entrie);
         day_1(contents)
     }
-    // fn day_1_part_2(&self) -> i32 {
-    //     day_1_part_2(self.entrie.to_string())
-    // }
-    fn day_1_part_2_from_file(&self) -> i32 {
+    fn day_1_part_2(&self, entrie: String) -> i32 {
+        day_1_part_2(entrie)
+    }
+    fn day_1_part_2_from_file(&mut self, entrie: String) -> i32 {
+        self.set_entrie(entrie);
         let contents = get_content_file(&self.entrie);
         day_1_part_2(contents)
     }
@@ -39,14 +40,13 @@ impl Day1RestPublicAPI {
     }
 
     pub fn start_day_1_real_input(&mut self) -> i32 {
-        let data = Day1PublicEntities::get_data_day_1_real_data();
-        self.set_entrie(data);
-        self.day_1_part_2_from_file()
+        self.set_entrie(Day1PublicEntities::get_data_day_1_real_data());
+        self.launch_day_1(self.entrie.to_string())
     }
     pub fn start_day_1_part_2_real_input(&mut self) -> i32 {
         let data = Day1PublicEntities::get_data_day_1_real_data();
         self.set_entrie(data);
-        self.day_1_part_2_from_file()
+        self.day_1_part_2(self.entrie.to_string())
     }
 }
 

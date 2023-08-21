@@ -91,18 +91,24 @@ mod tests {
     #[test]
     #[ignore = "only on local in my computer"]
     fn read_file_this_file() {
-        let absolute_path="/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015/src/repositories/file_tools.rs";
-        get_content_file(absolute_path);
+        let absolute_path="/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015_inputs/day_1/test_one_parenthesis.txt";
+        //"/home/baptiste/Documents/rust/projects/AOC-2015/aoc_2015/src/repositories/file_tools.rs";
+        //get_content_file(absolute_path);
+        assert_eq!("(", get_content_file(absolute_path));
     }
     #[test]
     fn read_file_this_file_relative_path() {
-        let relative_path = "./Cargo.toml";
+        let relative_path = "../aoc_2015_inputs/day_1/test_one_parenthesis.txt";
         get_content_file(relative_path);
+        assert_eq!("(", get_content_file(relative_path));
     }
 
     #[test]
     fn read_file_this_file_doesnt_exist() {
-        let relative_path = "./Cargjo.toml";
-        get_content_file(relative_path);
+        let relative_path = "../aoc_2015_inputs/day_1/notexist.txt";
+        assert_eq!(
+            "Problem to canonicalize file",
+            get_content_file(relative_path)
+        );
     }
 }
