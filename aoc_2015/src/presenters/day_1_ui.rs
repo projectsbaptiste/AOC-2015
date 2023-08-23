@@ -1,11 +1,8 @@
-use std::vec;
-
 use crate::presenters::day_1_presenter::Day1RestPublicAPI;
 use actix_web::{get, post, App, HttpResponse, HttpServer, Responder};
-use json as jsons;
-use jsons::JsonValue;
+//use json as jsons;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+//use serde_json::json; //Value
 #[get("/day_1_aoc")]
 async fn day_1_aoc() -> impl Responder {
     let mut t = Day1RestPublicAPI::new();
@@ -59,19 +56,18 @@ struct JsonApiFormat {
 }
 
 fn appli_json_api_format(result: i32) -> String {
-    let exemple = DayOneData {
+    let result_day_1_data = DayOneData {
         day_1_result: result,
     };
-    let mut test = Vec::new();
-    test.push(exemple);
     let data_struct = JsonApiFormat {
         code: 200,
         sucess: State::success,
-        data: test,
+        data: vec![result_day_1_data],
     };
-    let serialize = serde_json::to_string(&data_struct).unwrap();
+    //let serialize =
+    serde_json::to_string(&data_struct).unwrap()
     //let test = json::parse(&serialize).unwrap();
-    return serialize;
+    //return serialize;
 }
 
 #[actix_web::main]
@@ -93,7 +89,7 @@ mod tests {
             r#"
         {
             "code": 200,
-            "success": true,
+            "success": "success",
             "data": [{
                 "day_1": "280"
             }
@@ -102,6 +98,10 @@ mod tests {
         "#,
         )
         .unwrap();
-        println!("TEst {}", appli_json_api_format(280))
+        println!("TEst {}", appli_json_api_format(280));
+        let u = instantiated.as_str();
+        println!("TEst2 {:?}", u);
+        println!("TEst1 {}", instantiated);
+        //assert_eq!(u.to_string(), appli_json_api_format(280));
     }
 }
