@@ -1,4 +1,5 @@
 use crate::presenters::day_1_presenter::Day1RestPublicAPI;
+use actix_web::http::header::ContentType;
 use actix_web::{get, post, App, HttpResponse, HttpServer, Responder};
 //use json as jsons;
 use serde::{Deserialize, Serialize};
@@ -6,15 +7,11 @@ use serde::{Deserialize, Serialize};
 #[get("/day_1_aoc")]
 async fn day_1_aoc() -> impl Responder {
     let mut t = Day1RestPublicAPI::new();
-    //let responce = appli_json_api_format(Day1RestPublicAPI::new().start_day_1_real_input());
     let responce = appli_json_api_format(t.start_day_1_real_input()).clone();
-    //let test:  = responce.as_str().unwrap();
-    //let test = json::
-    //        match test {
-    //           Some(t) => HttpResponse::Ok().body(t),
-    //          None => HttpResponse::Ok().body("empty"),
-    //    }
-    HttpResponse::Ok().body(responce)
+    HttpResponse::Ok()
+        // .append_header(header)
+        .content_type(ContentType::json())
+        .body(responce)
 }
 
 #[get("/day_1_part_2_aoc")]
@@ -59,26 +56,15 @@ fn appli_json_api_format(result: i32) -> String {
     let result_day_1_data = DayOneData {
         day_1_result: result,
     };
-    let data_struct = JsonApiFormat {
-        code: 200,
-        sucess: State::success,
-        data: vec![result_day_1_data],
-    };
-    //let serialize =
-    serde_json::to_string(&data_struct).unwrap()
-    //let test = json::parse(&serialize).unwrap();
-    //return serialize;
+    serde_json::to_string(&vec![result_day_1_data]).unwrap()
 }
 
 #[actix_web::main]
 pub async fn start_server() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new().service(day_1_aoc).service(day_1_part_2_aoc)
-        //.route("/day_1", web::get().to(get_day_1))
-    })
-    .bind(("127.0.0.1", 8080))?
-    .run()
-    .await
+    HttpServer::new(|| App::new().service(day_1_aoc).service(day_1_part_2_aoc))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }
 
 mod tests {
