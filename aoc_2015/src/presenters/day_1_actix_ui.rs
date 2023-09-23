@@ -1,9 +1,7 @@
 use crate::presenters::day_1_presenter::Day1RestPublicAPI;
 use actix_web::http::header::ContentType;
-use actix_web::{get, post, App, HttpResponse, HttpServer, Responder};
-//use json as jsons;
+use actix_web::{get, post, web::Path, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
-//use serde_json::json; //Value
 #[get("/day_1_aoc")]
 async fn day_1_aoc() -> impl Responder {
     let mut t = Day1RestPublicAPI::new();
@@ -13,14 +11,29 @@ async fn day_1_aoc() -> impl Responder {
         .content_type(ContentType::json())
         .body(responce)
 }
+#[derive(Deserialize, Serialize)]
+pub struct DayIdentifier {
+    day_id: String,
+}
 
-#[get("/day_1_part_2_aoc")]
-async fn day_1_part_2_aoc() -> impl Responder {
-    HttpResponse::Ok().body(
-        Day1RestPublicAPI::new()
-            .start_day_1_part_2_real_input()
-            .to_string(),
-    )
+fn find_day(day_id: String, part: String) -> i32 {
+    match (day_id.as_str(), part.as_str()) {
+        ("1", "1") => Day1RestPublicAPI::new().start_day_1_real_input(),
+        ("1", "2") => Day1RestPublicAPI::new().start_day_1_part_2_real_input(),
+        _ => -1,
+    }
+}
+
+#[get("/day/{day_id}/part/{part_id}")]
+async fn day_1_part_2_aoc(req: HttpRequest) -> impl Responder {
+    let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
+    let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
+    let result = find_day(day_id, part_id);
+    let mut t = Day1RestPublicAPI::new();
+    let responce = appli_json_api_format(result).clone();
+    HttpResponse::Ok()
+        .content_type(ContentType::json())
+        .body(responce)
 }
 
 // #[post("/echo")]

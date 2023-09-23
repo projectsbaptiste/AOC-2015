@@ -31,7 +31,7 @@ pub mod domains;
 pub mod presenters;
 pub mod repositories;
 pub mod utils;
-use presenters::day_1_ui::start_server;
+use presenters::day_1_actix_ui::start_server;
 
 // not need async ?
 fn main() {
