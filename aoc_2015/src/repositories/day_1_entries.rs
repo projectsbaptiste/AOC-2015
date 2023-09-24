@@ -1,3 +1,8 @@
+//! # repositories
+//!
+//! `repositories` is adapter get data from file
+//!
+//!
 use crate::utils::file_tools::get_content_file;
 
 pub struct Day1PublicEntities {

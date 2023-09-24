@@ -1,3 +1,7 @@
+//! # presenters
+//!
+//! `presenters` generique presenter implementations
+//!
 use crate::domains::day_1::{day_1, day_1_part_2};
 use crate::repositories::day_1_entries::Day1PublicEntities;
 use crate::utils::file_tools::get_content_file;
@@ -30,11 +34,13 @@ impl Day1RestPublicAPI {
     fn day_1_part_2(&self, entrie: String) -> i32 {
         day_1_part_2(entrie)
     }
+    /*
     fn day_1_part_2_from_file(&mut self, entrie: String) -> i32 {
         self.set_entrie(entrie);
         let contents = get_content_file(&self.entrie);
         day_1_part_2(contents)
     }
+    */
     fn set_entrie(&mut self, entrie: String) {
         self.entrie = entrie;
     }
