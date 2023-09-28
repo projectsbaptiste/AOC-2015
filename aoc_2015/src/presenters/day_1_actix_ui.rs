@@ -9,7 +9,38 @@ use actix_web::http::header::ContentType;
 use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 
-#[get("/day_1_aoc")]
+/// # V1.0/day_1_aoc
+///
+/// exposed api to use day 1 part 1 exercice
+///
+/// # Statement (TODO voir le nom pour l'url de rest )
+///
+/// * `url` -V1.0/day_1_aoc
+///
+/// # Examples
+///
+///
+/// exemple 1
+/// '(())' -> entry or '()()' -> entry
+/// should return 0
+///
+/// exemple 2
+/// '(((' -> entry or '(()(()(' -> entry
+/// should return 3
+///
+/// exemple 3
+/// '))(((((' -> entry
+/// should return 3
+///
+/// exemple 4
+/// '())' -> entry or '))(' -> entry
+/// should return -1
+///
+/// exemple 5
+/// ')))' -> entry or ')())())' -> entry
+/// should return -3
+///
+#[get("V1.0/day_1_aoc")]
 async fn day_1_aoc() -> impl Responder {
     let mut t = Day1RestPublicAPI::new();
     let responce = appli_json_api_format(t.start_day_1_real_input()).clone();
@@ -39,9 +70,18 @@ fn find_custum_day(day_id: String, part: String, entrie: String) -> i32 {
     }
 }
 
-/// # days rest api
+use const_str;
 
-#[get("/day/{day_id}/part/{part_id}")]
+/// # V1.0/day/{day_id}/part/{part_id}
+///
+/// exposed api to use day 1 part 1 exercice
+///
+/// # Statement (TODO voir le nom pour l'url de rest )
+///
+/// * `url` -V1.0/day_1_aoc
+///
+/// # Examples
+//  #[get(DAY_API)]
 async fn day_1_part_2_aoc(req: HttpRequest) -> impl Responder {
     let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
     let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
@@ -94,17 +134,24 @@ fn appli_json_api_format(result: i32) -> String {
     serde_json::to_string(&vec![result_day_1_data]).unwrap()
 }
 
+// CONSTRUCTION OF API STATEMENT
+const API_VERSION: &'static str = "/V1.0";
+const DAY_URL: &'static str = "/day/{day_id}/part/{part_id}";
+// Normal way to day api
+const DAYS_API: &'static str = const_str::concat!(API_VERSION, DAY_URL);
+
+const CUSTUM_URL: &'static str = "/custum";
+const CUSTUM_DAYS: &'static str = const_str::concat!(CUSTUM_URL, DAY_URL);
+// Custum (with entry post fonction) way to day api
+const CUSTUM_DAYS_API: &'static str = const_str::concat!(API_VERSION, CUSTUM_DAYS);
 /// # start server
 #[actix_web::main]
-pub async fn start_server() -> std::io::Result<()> {
+pub async fn start_actix_server() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(day_1_aoc)
-            .service(day_1_part_2_aoc)
-            .route(
-                "/custum/day/{day_id}/part/{part_id}",
-                web::post().to(custum_day_1),
-            )
+            .route(DAYS_API, web::get().to(day_1_part_2_aoc))
+            .route(CUSTUM_DAYS_API, web::post().to(custum_day_1))
         //.service(custum_day_1)
     })
     .bind(("127.0.0.1", 8080))?
