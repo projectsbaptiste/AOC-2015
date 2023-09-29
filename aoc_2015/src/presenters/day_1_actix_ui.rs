@@ -144,6 +144,10 @@ const CUSTUM_URL: &'static str = "/custum";
 const CUSTUM_DAYS: &'static str = const_str::concat!(CUSTUM_URL, DAY_URL);
 // Custum (with entry post fonction) way to day api
 const CUSTUM_DAYS_API: &'static str = const_str::concat!(API_VERSION, CUSTUM_DAYS);
+
+const WEB_SERVER_IP: &str = "127.0.0.1";
+const WEB_SERVER_PORT: u16 = 8080;
+// do env file with urls and server ip and port
 /// # start server
 #[actix_web::main]
 pub async fn start_actix_server() -> std::io::Result<()> {
@@ -154,7 +158,7 @@ pub async fn start_actix_server() -> std::io::Result<()> {
             .route(CUSTUM_DAYS_API, web::post().to(custum_day_1))
         //.service(custum_day_1)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((WEB_SERVER_IP, WEB_SERVER_PORT))?
     .run()
     .await
 }
