@@ -16,10 +16,18 @@ trait Day1PublicAPI {
     fn start_day_1_part_2_real_input(&mut self) -> i32;
 }
 
+fn find_day_result(day_id: String, part: String) -> i32 {
+    match (day_id.as_str(), part.as_str()) {
+        ("1", "1") => Day1RestPublicAPI::new().start_day_1_real_input(),
+        ("1", "2") => Day1RestPublicAPI::new().start_day_1_part_2_real_input(),
+        _ => -1,
+    }
+}
+
 impl Day1RestPublicAPI {
     pub fn new() -> Day1RestPublicAPI {
         Day1RestPublicAPI {
-            entrie: "".to_string(),
+            entrie: String::new(),
         }
     }
     pub fn launch_day_1(&mut self, entrie: String) -> i32 {
@@ -31,9 +39,14 @@ impl Day1RestPublicAPI {
         let contents = get_content_file(&self.entrie);
         day_1(contents)
     }
-    fn day_1_part_2(&self, entrie: String) -> i32 {
+    pub fn day_1_part_2(&self, entrie: String) -> i32 {
         day_1_part_2(entrie)
     }
+    pub fn launch_day(&mut self, entrie: String, day_number: i32, part_number: i32) -> i32 {
+        self.set_entrie(entrie);
+        day_1(self.entrie.to_string())
+    }
+
     /*
     fn day_1_part_2_from_file(&mut self, entrie: String) -> i32 {
         self.set_entrie(entrie);

@@ -6,21 +6,50 @@
 
 use crate::presenters::day_1_presenter::Day1RestPublicAPI;
 use actix_web::http::header::ContentType;
-use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
+use actix_web::{get, http, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 
-#[get("/day_1_aoc")]
+use actix_cors::Cors;
+
+/// # V1.0/day_1_aoc
+///
+/// exposed api to use day 1 part 1 exercice
+///
+/// # Statement (TODO voir le nom pour l'url de rest )
+///
+/// * `url` -V1.0/day_1_aoc
+///
+/// # Examples
+///
+///
+/// exemple 1
+/// '(())' -> entry or '()()' -> entry
+/// should return 0
+///
+/// exemple 2
+/// '(((' -> entry or '(()(()(' -> entry
+/// should return 3
+///
+/// exemple 3
+/// '))(((((' -> entry
+/// should return 3
+///
+/// exemple 4
+/// '())' -> entry or '))(' -> entry
+/// should return -1
+///
+/// exemple 5
+/// ')))' -> entry or ')())())' -> entry
+/// should return -3
+///
+#[get("V1.0/day_1_aoc")]
 async fn day_1_aoc() -> impl Responder {
     let mut t = Day1RestPublicAPI::new();
-    let responce = appli_json_api_format(t.start_day_1_real_input()).clone();
+    let responce = appli_json_api_format(1, 1, t.start_day_1_real_input()).clone();
     HttpResponse::Ok()
         // .append_header(header)
         .content_type(ContentType::json())
         .body(responce)
-}
-#[derive(Deserialize, Serialize)]
-pub struct DayIdentifier {
-    day_id: String,
 }
 
 fn find_day(day_id: String, part: String) -> i32 {
@@ -34,19 +63,39 @@ fn find_day(day_id: String, part: String) -> i32 {
 fn find_custum_day(day_id: String, part: String, entrie: String) -> i32 {
     match (day_id.as_str(), part.as_str()) {
         ("1", "1") => Day1RestPublicAPI::new().launch_day_1(entrie),
-        ("1", "2") => Day1RestPublicAPI::new().start_day_1_part_2_real_input(),
+        ("1", "2") => Day1RestPublicAPI::new().day_1_part_2(entrie),
         _ => -1,
     }
 }
 
-/// # days rest api
+use const_str;
 
-#[get("/day/{day_id}/part/{part_id}")]
+/// # V1.0/day/{day_id}/part/{part_id}
+///
+/// exposed api to use day 1 part 1 exercice
+///
+/// # Statement (TODO voir le nom pour l'url de rest )
+///
+/// * `url` -V1.0/day_1_aoc
+///
+/// # Examples
+//  #[get(DAY_API)]
 async fn day_1_part_2_aoc(req: HttpRequest) -> impl Responder {
     let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
     let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
+    let day_id_n: i32 = day_id
+        .clone()
+        .trim()
+        .parse()
+        .expect("day url is not a number");
+    let part_id_n: i32 = part_id
+        .clone()
+        .trim()
+        .parse()
+        .expect("part url is not a number");
     let result = find_day(day_id, part_id);
-    let responce = appli_json_api_format(result).clone();
+
+    let responce = appli_json_api_format(day_id_n, part_id_n, result).clone();
     HttpResponse::Ok()
         .content_type(ContentType::json())
         .body(responce)
@@ -60,8 +109,19 @@ struct FormData {
 async fn custum_day_1(form: web::Form<FormData>, req: HttpRequest) -> HttpResponse {
     let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
     let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
+    let day_id_n: i32 = day_id
+        .clone()
+        .trim()
+        .parse()
+        .expect("day url is not a number");
+    let part_id_n: i32 = part_id
+        .clone()
+        .trim()
+        .parse()
+        .expect("part url is not a number");
+
     let result = find_custum_day(day_id, part_id, form.data.clone());
-    let responce = appli_json_api_format(result).clone();
+    let responce = appli_json_api_format(day_id_n, part_id_n, result).clone();
     HttpResponse::Ok()
         .content_type(ContentType::json())
         .body(responce)
@@ -82,32 +142,56 @@ enum State {
 }
 /// # day 1 structure
 #[derive(Serialize, Deserialize, Debug)]
-struct DayOneData {
-    day_1_result: i32,
+struct DayData {
+    day_number: i32,
+    day_part: i32,
+    day_result: i32,
 }
 
 /// # transform restult to json day 1
-fn appli_json_api_format(result: i32) -> String {
-    let result_day_1_data = DayOneData {
-        day_1_result: result,
+fn appli_json_api_format(day_number: i32, day_part: i32, result: i32) -> String {
+    let result_day_1_data = DayData {
+        day_number: day_number,
+        day_part: day_part,
+        day_result: result,
     };
     serde_json::to_string(&vec![result_day_1_data]).unwrap()
 }
 
+// CONSTRUCTION OF API STATEMENT
+const API_VERSION: &'static str = "/V1.0";
+const DAY_URL: &'static str = "/day/{day_id}/part/{part_id}";
+// Normal way to day api
+const DAYS_API: &'static str = const_str::concat!(API_VERSION, DAY_URL);
+
+const CUSTUM_URL: &'static str = "/custum";
+const CUSTUM_DAYS: &'static str = const_str::concat!(CUSTUM_URL, DAY_URL);
+// Custum (with entry post fonction) way to day api
+const CUSTUM_DAYS_API: &'static str = const_str::concat!(API_VERSION, CUSTUM_DAYS);
+
+const WEB_SERVER_IP: &str = "127.0.0.1";
+const WEB_SERVER_PORT: u16 = 8080;
+// do env file with urls and server ip and port
 /// # start server
 #[actix_web::main]
-pub async fn start_server() -> std::io::Result<()> {
+pub async fn start_actix_server() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(day_1_aoc)
-            .service(day_1_part_2_aoc)
-            .route(
-                "/custum/day/{day_id}/part/{part_id}",
-                web::post().to(custum_day_1),
+            .wrap(
+                Cors::default()
+                    .allowed_origin("http://localhost:3000")
+                    .allowed_methods(vec!["GET", "POST"])
+                    .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+                    .allowed_header(http::header::CONTENT_TYPE)
+                    .supports_credentials()
+                    .max_age(3600),
             )
+            .service(day_1_aoc)
+            .route(DAYS_API, web::get().to(day_1_part_2_aoc))
+            .route(CUSTUM_DAYS_API, web::post().to(custum_day_1))
         //.service(custum_day_1)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((WEB_SERVER_IP, WEB_SERVER_PORT))?
     .run()
     .await
 }
@@ -124,7 +208,7 @@ mod tests {
             "#,
         )
         .unwrap();
-        println!("TEst {}", appli_json_api_format(280));
+        println!("TEst {}", appli_json_api_format(1, 1, 280));
         let u = instantiated.as_str();
         println!("TEst2 {:?}", u);
         println!("TEst1 {}", instantiated);
