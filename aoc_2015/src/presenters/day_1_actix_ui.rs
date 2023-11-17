@@ -49,7 +49,7 @@ use log::info;
 async fn day_1_aoc() -> impl Responder {
     let mut v = Vec::new();
     v[0] = Day1PublicEntities::get_data_day_1_real_data();
-    let t = DayRestPublicAPI::new(1, 1, v.clone()).launch_day_X_part_Y(v.clone());
+    let t = DayRestPublicAPI::new(1, 1, v.clone()).launch_day_x_part_y(v.clone());
     let responce = appli_json_api_format(1, 1, t);
     info!("day_1_aoc response {}", responce.clone());
     HttpResponse::Ok()
@@ -60,7 +60,7 @@ async fn day_1_aoc() -> impl Responder {
 
 // fn find_day(day_id: String, part: String) -> i32 {
 //     match (day_id.as_str(), part.as_str()) {
-//         ("1", "1") => DayRestPublicAPI::new(1, 1).launch_day_X_part_Y(1, 1, day_data, day_result),
+//         ("1", "1") => DayRestPublicAPI::new(1, 1).launch_day_x_part_y(1, 1, day_data, day_result),
 //         ("1", "2") => DayRestPublicAPI::new().start_day_1_part_2_real_input(),
 //         _ => -1,
 //     }
@@ -68,8 +68,8 @@ async fn day_1_aoc() -> impl Responder {
 
 // fn find_custum_day(day_id: String, part: String, entrie: Vec<String>) -> i32 {
 //     match (day_id.as_str(), part.as_str()) {
-//         ("1", "1") => DayRestPublicAPI::new(day_id, part, entrie).launch_day_X_part_Y(entrie),
-//         ("1", "2") => DayRestPublicAPI::new().launch_day_X_part_Y(
+//         ("1", "1") => DayRestPublicAPI::new(day_id, part, entrie).launch_day_x_part_y(entrie),
+//         ("1", "2") => DayRestPublicAPI::new().launch_day_x_part_y(
 //             day_id.trim().parse().expect("msg"),
 //             part.trim().parse().expect("msg"),
 //             vec![],
@@ -80,6 +80,19 @@ async fn day_1_aoc() -> impl Responder {
 // }
 
 use const_str;
+
+fn get_rest_info_i32(req: HttpRequest, url_var: &str) -> i32 {
+    let url_value = req
+        .match_info()
+        .get(url_var)
+        .unwrap_or("unknow")
+        .to_string();
+    url_value
+        .clone()
+        .trim()
+        .parse()
+        .expect("url is not a number")
+}
 
 /// # V1.0/day/{day_id}/part/{part_id}
 ///
@@ -92,29 +105,18 @@ use const_str;
 /// # Examples
 //  #[get(DAY_API)]
 async fn day_api_by_part(req: HttpRequest) -> impl Responder {
-    let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
-    let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
-    let day_id_n: i32 = day_id
-        .clone()
-        .trim()
-        .parse()
-        .expect("day url is not a number");
-    let part_id_n: i32 = part_id
-        .clone()
-        .trim()
-        .parse()
-        .expect("part url is not a number");
+    let day_id_n: i32 = get_rest_info_i32(req.clone(), "day_id");
+    let part_id_n: i32 = get_rest_info_i32(req.clone(), "part_id");
     let mut v = Vec::new();
-    let mut test = Day1PublicEntities::get_data_day_1_real_data();
     v.push(Day1PublicEntities::get_data_day_1_real_data());
     let result =
-        DayRestPublicAPI::new(day_id_n, part_id_n, v.clone()).launch_day_X_part_Y(v.clone());
+        DayRestPublicAPI::new(day_id_n, part_id_n, v.clone()).launch_day_x_part_y(v.clone());
 
     let responce = appli_json_api_format(day_id_n, part_id_n, result).clone();
     info!(
         "day_api_by_part day {} part {} responce {}",
-        day_id.clone(),
-        part_id.clone(),
+        day_id_n.clone(),
+        part_id_n.clone(),
         responce.clone()
     );
     HttpResponse::Ok()
@@ -123,23 +125,13 @@ async fn day_api_by_part(req: HttpRequest) -> impl Responder {
 }
 
 async fn file_day_api_by_part(req: HttpRequest) -> impl Responder {
-    let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
-    let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
-    let day_id_n: i32 = day_id
-        .clone()
-        .trim()
-        .parse()
-        .expect("day url is not a number");
-    let part_id_n: i32 = part_id
-        .clone()
-        .trim()
-        .parse()
-        .expect("part url is not a number");
+    let day_id_n: i32 = get_rest_info_i32(req.clone(), "day_id");
+    let part_id_n: i32 = get_rest_info_i32(req.clone(), "part_id");
     let mut v = Vec::new();
     let mut test = Day1PublicEntities::get_data_day_1_real_data();
     v.push(Day1PublicEntities::get_data_day_1_real_data());
     let result =
-        DayRestPublicAPI::new(day_id_n, part_id_n, v.clone()).launch_day_X_part_Y(v.clone());
+        DayRestPublicAPI::new(day_id_n, part_id_n, v.clone()).launch_day_x_part_y(v.clone());
 
     let responce = appli_json_api_format(day_id_n, part_id_n, result).clone();
     HttpResponse::Ok()
@@ -153,26 +145,14 @@ struct FormData {
 }
 
 async fn custum_day_by_part(form: web::Form<FormData>, req: HttpRequest) -> HttpResponse {
-    let day_id = req.match_info().get("day_id").unwrap_or("1").to_string();
-    let part_id = req.match_info().get("part_id").unwrap_or("1").to_string();
-    let day_id_n = day_id
-        .clone()
-        .trim()
-        .parse()
-        .expect("part url is not a number");
-
-    let part_id_n: i32 = part_id
-        .clone()
-        .trim()
-        .parse()
-        .expect("part url is not a number");
+    let day_id_n: i32 = get_rest_info_i32(req.clone(), "day_id");
+    let part_id_n: i32 = get_rest_info_i32(req.clone(), "part_id");
 
     //let result = find_custum_day(day_id, part_id, form.data.clone());
     let mut v = Vec::new();
-    let test = form.data.clone();
     v.push(form.data.clone());
     let result =
-        DayRestPublicAPI::new(day_id_n, part_id_n, v.clone()).launch_day_X_part_Y(v.clone());
+        DayRestPublicAPI::new(day_id_n, part_id_n, v.clone()).launch_day_x_part_y(v.clone());
     let responce = appli_json_api_format(day_id_n, part_id_n, result).clone();
     HttpResponse::Ok()
         .content_type(ContentType::json())
@@ -227,7 +207,6 @@ const WEB_SERVER_IP: &str = "127.0.0.1";
 const WEB_SERVER_PORT: u16 = 8080;
 // do env file with urls and server ip and port
 use actix_web::middleware::Logger;
-use env_logger::Env;
 /// # start server
 #[actix_web::main]
 pub async fn start_actix_server() -> std::io::Result<()> {

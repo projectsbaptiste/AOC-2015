@@ -5,7 +5,7 @@ fn day_1_with_one_parnetesis_entrie_should_return_floor_1() {
     let mut v = Vec::new();
     v.push(exemple);
     assert_eq!(
-        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_X_part_Y(v.clone()),
+        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_x_part_y(v.clone()),
         1
     );
 }
@@ -17,7 +17,7 @@ fn day_1_with_file_absolute_path_should_return_floor_1() {
     let mut v = Vec::new();
     v.push(exemple);
     assert_eq!(
-        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_X_part_Y(v.clone()),
+        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_x_part_y(v.clone()),
         1
     );
 }
@@ -28,7 +28,7 @@ fn day_1_with_file_relative_path_should_return_floor_1() {
     let mut v = Vec::new();
     v.push(exemple);
     assert_eq!(
-        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_X_part_Y_from_file(v.clone()),
+        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_x_part_y_from_file(v.clone()),
         280
     );
     //assert_eq!(280, DayRestPublicAPI::new().launch_day_1_from_file(exemple));
@@ -42,7 +42,7 @@ fn day_1_with_error_path_should_return_floor_0() {
     v.push(exemple);
 
     assert_eq!(
-        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_X_part_Y_from_file(v.clone()),
+        DayRestPublicAPI::new(1, 1, v.clone()).launch_day_x_part_y_from_file(v.clone()),
         0
     );
 }
