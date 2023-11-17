@@ -1,6 +1,6 @@
 import logo from '../logo.svg';
 import '../App.css';
-import Banner from './Banner'
+import Todo2 from './Banner'
 import Todo from './Todo'
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <p>
           Edit <code>src/components/App.js</code> and save to reload.
         </p>
-        <div><Banner/></div>
+        <div><Todo2/></div>
         <div><Todo/></div>
         <a
           className="App-link"

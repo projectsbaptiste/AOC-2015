@@ -4,6 +4,8 @@
 //!
 //! -statement of day 1 problem : <https://adventofcode.com/2015/day/1>
 
+use log::debug;
+
 /// # nb of occurence
 ///
 /// nomber of occurence of a char in a string
@@ -30,6 +32,7 @@
 ///
 ///
 fn nb_of_occurence(entrie: String, wanted: char) -> i32 {
+    debug!("nb_of_occurence entrie {} wanted {}", entrie, wanted);
     return entrie.chars().filter(|c| c == &wanted).count() as i32;
 }
 
